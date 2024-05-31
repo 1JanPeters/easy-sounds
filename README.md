@@ -15,7 +15,7 @@ Easy-Sounds Bot is a powerful Discord bot that allows users to set join sounds, 
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/yourusername/easy-sounds.git
+    git clone https://github.com/1JanPeters/easy-sounds.git
     cd easy-sounds
     ```
 
