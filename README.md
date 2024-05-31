@@ -1,6 +1,6 @@
 # Easy-Sounds Bot
 
-Easy-Sounds Bot is a powerful Discord bot that allows users to set join sounds, delete sounds, rename sounds, and download and trim sounds from YouTube for a custom soundboard experience.
+Easy-Sounds Bot is a powerful Discord bot that allows users to set join sounds, delete sounds, rename sounds, and download and trim sounds from YouTube all from a text channel for a custom soundboard experience.
 
 ## Features
 
