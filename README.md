@@ -10,6 +10,34 @@ Easy-Sounds Bot is a powerful Discord bot that allows users to set join sounds, 
 - **Rename Sound**: Administrators can rename sound files.
 - **Download and Trim from YouTube**: Users can download and trim sounds from YouTube.
 - **Upload Sounds Directly**: Users can upload sound files directly to the designated text channel to add them to the soundboard.
+- **Adjust Sound Volume**: Users can modify the volume of sound files with a specified multiplier and optionally replace the original file.
+
+### Command Usage
+
+- **/setjoinsound**
+  - **Description**: Set a sound to play when you join a voice channel.
+  - **Usage**: `/setjoinsound sound_name`
+
+- **/deletesound**
+  - **Description**: Delete a sound file from the soundboard.
+  - **Usage**: `/deletesound sound_name`
+
+- **/rename**
+  - **Description**: Rename a sound file.
+  - **Usage**: `/rename "old_name" "new_name"`
+
+- **/ytdlsound**
+  - **Description**: Download and trim a sound from YouTube. `-n name -l link -s start HH:MM:SS.sss -e end HH:MM:SS.sss`
+  - **Usage**: `/ytdlsound -n name -l link [-s start_time] [-e end_time]`
+
+- **/volume**
+  - **Description**: Change the volume of a saved sound. `-n name -m multiplier [-r to replace original]`
+  - **Usage**: `/volume -n name -m multiplier [-r]`
+
+- **/refresh**
+  - **Description**: Refresh the soundboard to update the button list.
+  - **Usage**: `/refresh`
+
 
 ## Installation
 
