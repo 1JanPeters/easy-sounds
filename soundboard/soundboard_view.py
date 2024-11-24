@@ -1,7 +1,7 @@
+import hashlib
 from discord.ui import Button, View
 import discord
 import soundboard.helper as helper
-
 
 
 class SoundboardView(View):
@@ -10,7 +10,7 @@ class SoundboardView(View):
         self.SOUNDS_FOLDER = SOUNDS_FOLDER
         self.buttons_per_page = 20
         self.pages = self.create_pages()
-        self.bot=bot
+        self.bot = bot
 
     def create_pages(self):
         keywords = helper.load_sounds(self.SOUNDS_FOLDER)
@@ -25,7 +25,9 @@ class SoundboardView(View):
     def create_page(self, buttons):
         page = View(timeout=None)
         for word, sound_file in buttons:
-            button = Button(label=word, style=discord.ButtonStyle.primary)
+            # Determine the color for the button based on the sound file name
+            style = self.get_style_for_sound(sound_file)
+            button = Button(label=word, style=style)
             button.callback = self.create_sound_callback(sound_file)
             page.add_item(button)
         return page
@@ -46,3 +48,19 @@ class SoundboardView(View):
             except Exception as e:
                 print(f"Error playing sound via button: {e}")
         return callback
+
+    def get_style_for_sound(self, sound_file):
+        """
+        Determine the button style (color) based on the hash of the sound file name.
+        """
+        # Generate a hash of the sound file name
+        hash_value = int(hashlib.md5(sound_file.encode()).hexdigest(), 16)
+        
+        # Map the hash value to one of the available styles
+        styles = [
+            discord.ButtonStyle.primary,   # Blue
+            discord.ButtonStyle.secondary, # Grey
+            discord.ButtonStyle.success,   # Green
+            discord.ButtonStyle.danger     # Red
+        ]
+        return styles[hash_value % len(styles)]

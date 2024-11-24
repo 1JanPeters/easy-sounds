@@ -97,6 +97,52 @@ def register_commands(tree, bot, SOUNDS_FOLDER, GUILD_ID, PERSISTENCE_FILE, SOUN
             await create_soundboard(bot, GUILD_ID, SOUNDBOARD_CHANNEL_ID, SOUNDS_FOLDER)
         except Exception as e:
             await interaction.followup.send(f"An error occurred: {e}")
+    
+    @tree.command(name="volume", description="Change the volume of a saved sound. -n name -m multiplier [-r to replace original]")
+    async def volume(interaction: discord.Interaction, *, args: str):
+        args_dict = helper.parse_arguments(args, ['-n', '-m', '-r'])
+
+        name = args_dict.get('-n')
+        multiplier = args_dict.get('-m')
+        replace_original = '-r' in args_dict  # Check if the `-r` flag is present
+
+        if not name or not multiplier:
+            await interaction.response.send_message("You must provide both the sound name (-n) and a volume multiplier (-m).")
+            return
+
+        try:
+            multiplier = float(multiplier)  # Convert multiplier to a float
+            sound_file = os.path.join(SOUNDS_FOLDER, f"{name}.mp3")
+
+            if not os.path.exists(sound_file):
+                await interaction.response.send_message(f"The sound '{name}' does not exist.")
+                return
+
+            # Load the audio file
+            audio = AudioFileClip(sound_file)
+
+            # Apply the volume multiplier
+            amplified_audio = audio.volumex(multiplier)
+
+            # Define output file
+            output_file = sound_file if replace_original else os.path.join(SOUNDS_FOLDER, f"{name}_volume_{multiplier:.1f}.mp3")
+
+            # Save the amplified sound
+            amplified_audio.write_audiofile(output_file, codec="mp3")
+            audio.close()
+
+            if replace_original:
+                await interaction.response.send_message(f"The sound '{name}' has been amplified by a factor of {multiplier:.1f} and replaced.")
+            else:
+                await interaction.response.send_message(
+                    f"The sound '{name}' has been amplified by a factor of {multiplier:.1f} and saved as '{name}_volume_{multiplier:.1f}.mp3'."
+                )
+
+            # Update the soundboard
+            await create_soundboard(bot, GUILD_ID, SOUNDBOARD_CHANNEL_ID, SOUNDS_FOLDER)
+
+        except Exception as e:
+            await interaction.response.send_message(f"An error occurred: {e}")
 
     @tree.command()
     async def refresh(interaction: discord.Interaction):
