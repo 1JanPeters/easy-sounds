@@ -1,10 +1,13 @@
+import os
 import json
 import discord
 from discord.ext import commands
 import soundboard.commands as sb_commands, soundboard.events as events, soundboard.helper as helper
 
+script_dir = os.path.dirname(os.path.abspath(__file__))
+config_path = os.path.join(script_dir, 'config.json')
 # Load configuration from file
-with open('config.json', mode='r', encoding='UTF-8') as config_file:
+with open(config_path, mode='r', encoding='UTF-8') as config_file:
     config = json.load(config_file)
 
 TOKEN = config['TOKEN']

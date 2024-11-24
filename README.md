@@ -30,9 +30,31 @@ Easy-Sounds Bot is a powerful Discord bot that allows users to set join sounds, 
     pip install -r requirements.txt
     ```
 
+4. Install `ffmpeg`:
+    - On **Linux** (Debian-based systems like Ubuntu):
+        ```sh
+        sudo apt update
+        sudo apt install ffmpeg
+        ```
+    - On **macOS** (using Homebrew):
+        ```sh
+        brew install ffmpeg
+        ```
+    - On **Windows**:
+        - Download `ffmpeg` from [ffmpeg.org](https://ffmpeg.org/download.html).
+        - Extract the files and add the `bin` directory to your system's PATH. (Refer to [this guide](https://www.geeksforgeeks.org/how-to-install-ffmpeg-on-windows/) for detailed instructions.)
+
 4. Copy the configuration template:
     - Copy `config_template.json` and save it as `config.json`.
     - Edit `config.json` and replace placeholders with your Discord bot token, guild ID, soundboard channel ID, and the full path to your sounds folder (e.g., `/home/user/sounds`, `C:\Users\user\sounds`).
+
+
+## Requirements
+
+- `discord.py==2.3.2`
+- `moviepy==1.0.3`
+- `yt-dlp`
+- **ffmpeg** (must be installed on your system)
 
 
 ## Creating and Setting Up the Discord Bot
@@ -90,3 +112,8 @@ This bot allows users to download and trim audio from YouTube. Users are respons
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+### Third-Party Libraries
+
+- `yt-dlp` is licensed under the [The Unlicense](https://opensource.org/licenses/Unlicense).
+- `discord.py` and `moviepy` are licensed under the [MIT License](https://opensource.org/licenses/MIT).

@@ -2,11 +2,13 @@ import discord
 from discord import app_commands
 import os
 import re
-from pytube import YouTube
 from moviepy.editor import AudioFileClip
 import soundboard.helper as helper
 import soundboard.sound_management as sound_management
 import soundboard.soundboard_view as soundboard_view
+from yt_dlp import YoutubeDL
+
+
 
 def register_commands(tree, bot, SOUNDS_FOLDER, GUILD_ID, PERSISTENCE_FILE, SOUNDBOARD_CHANNEL_ID, user_sound_mapping):
     @tree.command(name="setjoinsound", description="Set a sound to play when you join a voice channel.")
@@ -64,20 +66,32 @@ def register_commands(tree, bot, SOUNDS_FOLDER, GUILD_ID, PERSISTENCE_FILE, SOUN
 
         await interaction.response.send_message(f"Downloading sound from {url}...")
         try:
-            yt = YouTube(url)
-            audio_stream = yt.streams.filter(only_audio=True).first()
-            output_file = audio_stream.download(output_path=SOUNDS_FOLDER, filename=f"{name}.mp3")
+            output_file = os.path.join(SOUNDS_FOLDER, f"{name}")
+            ydl_opts = {
+                'format': 'bestaudio/best',  # Download best audio format
+                'outtmpl': output_file,     # Save to SOUNDS_FOLDER with the provided name
+                'noplaylist': True,         # Ensure only the single video is downloaded
+                'postprocessors': [{
+                    'key': 'FFmpegExtractAudio',   # Extract audio
+                    'preferredcodec': 'mp3',      # Convert to MP3
+                    'preferredquality': '192',    # Set quality to 192 kbps
+                }],
+            }
+
+            with YoutubeDL(ydl_opts) as ydl:
+                ydl.download([url])
+            
 
             if start or end:
-                audio = AudioFileClip(output_file)
+                audio = AudioFileClip(f"{output_file}.mp3")
                 start_seconds = helper.convert_to_seconds(start) if start else 0
                 end_seconds = helper.convert_to_seconds(end) if end else audio.duration
                 trimmed_audio = audio.subclip(start_seconds, end_seconds)
                 trimmed_output_file = os.path.join(SOUNDS_FOLDER, f"{name}_trimmed.mp3")
                 trimmed_audio.write_audiofile(trimmed_output_file)
                 audio.close()
-                os.remove(output_file)
-                os.rename(trimmed_output_file, output_file)
+                os.remove(f"{output_file}.mp3")
+                os.rename(trimmed_output_file, f"{output_file}.mp3")
 
             await interaction.followup.send(f"Sound '{name}' has been saved.")
             await create_soundboard(bot, GUILD_ID, SOUNDBOARD_CHANNEL_ID, SOUNDS_FOLDER)
