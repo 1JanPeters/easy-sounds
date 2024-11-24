@@ -53,6 +53,7 @@ Easy-Sounds Bot is a powerful Discord bot that allows users to set join sounds, 
 
 - `discord.py==2.3.2`
 - `moviepy==1.0.3`
+- `pynacl`
 - `yt-dlp`
 - **ffmpeg** (must be installed on your system)
 
@@ -117,3 +118,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - `yt-dlp` is licensed under the [The Unlicense](https://opensource.org/licenses/Unlicense).
 - `discord.py` and `moviepy` are licensed under the [MIT License](https://opensource.org/licenses/MIT).
+- `pynacl` is licensed under the [Apache License 2.0](https://opensource.org/licenses/Apache-2.0).
